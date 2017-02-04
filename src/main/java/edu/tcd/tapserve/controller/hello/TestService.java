@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TestService {
-	
-	public String testHelloService(){
+
+	public String testHelloService() {
 		return "hello";
 	}
-	
+
 }
