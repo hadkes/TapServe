@@ -13,8 +13,8 @@ public class HelloController {
 	private TestService testService;
 
 	@RequestMapping("/hello")
-	public ServiceProvider sayHi() {
-		return testService.findByRoleId("1234");
+	public String sayHi() {
+		return testService.testHelloService();
 
 	}
 }
