@@ -9,12 +9,14 @@ import edu.tcd.tapserve.bean.Administrator;
 import edu.tcd.tapserve.bean.Credentials;
 import edu.tcd.tapserve.bean.Role;
 import edu.tcd.tapserve.bean.ServiceProvider;
+import edu.tcd.tapserve.bean.ServiceToProviderMapper;
 import edu.tcd.tapserve.bean.User;
 import edu.tcd.tapserve.constants.Constants.RoleType;
 import edu.tcd.tapserve.repository.AdministratorRepository;
 import edu.tcd.tapserve.repository.CredentialsRepository;
 import edu.tcd.tapserve.repository.RoleRepository;
 import edu.tcd.tapserve.repository.ServiceProviderRepository;
+import edu.tcd.tapserve.repository.ServiceToProviderMapperRepository;
 import edu.tcd.tapserve.repository.UserRepository;
 
 @Service
@@ -35,6 +37,9 @@ public class RegistrationService {
 	@Autowired
 	private AdministratorRepository administratorRepository;
 
+	@Autowired
+	private ServiceToProviderMapperRepository mapperRepository;
+	
 	public String addCredentials(Credentials credentials) {
 		credentials.setId(UUID.randomUUID().toString());
 		String actorId = UUID.randomUUID().toString();
@@ -54,6 +59,15 @@ public class RegistrationService {
 		Role role = roleRepository.findByName(RoleType.SERVICE_PROVIDER.name());
 		serviceProvider.setRole(role);
 		serviceProviderRepository.save(serviceProvider);
+		
+		ServiceToProviderMapper mapper = new ServiceToProviderMapper();
+		for (edu.tcd.tapserve.bean.Service service : serviceProvider.getServices()) {
+			mapper.setId(UUID.randomUUID().toString());
+			mapper.setService(service);
+			mapper.setServiceProvider(serviceProvider);
+			mapperRepository.save(mapper);
+		}
+		
 		return serviceProvider;
 	}
 
@@ -63,4 +77,5 @@ public class RegistrationService {
 		administratorRepository.save(administrator);
 		return administrator;
 	}
+
 }

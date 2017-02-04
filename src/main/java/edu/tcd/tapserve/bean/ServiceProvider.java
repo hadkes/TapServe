@@ -8,12 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "SERVICE_PROVIDER")
@@ -45,9 +42,10 @@ public class ServiceProvider {
 	@JoinColumn(name = "ROLE_ID")
 	private Role role;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "SERVICE_TO_PROVIDER_MAPPER", joinColumns = @JoinColumn(name = "SERVICE_PROVIDER_ID") , inverseJoinColumns = @JoinColumn(name = "SERVICE_ID") )
-	@JsonManagedReference
+//	@ManyToMany(fetch = FetchType.EAGER)
+//	@JoinTable(name = "SERVICE_TO_PROVIDER_MAPPER", joinColumns = @JoinColumn(name = "SERVICE_PROVIDER_ID") , inverseJoinColumns = @JoinColumn(name = "SERVICE_ID") )
+//	@JsonManagedReference
+	@Transient
 	private List<Service> services = new ArrayList<Service>();
 
 	public String getId() {

@@ -6,10 +6,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "SERVICE")
@@ -24,8 +22,9 @@ public class Service {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@ManyToMany(mappedBy = "services")
-	@JsonBackReference
+//	@ManyToMany(mappedBy = "services")
+//	@JsonBackReference
+	@Transient
 	List<ServiceProvider> serviceproviders = new ArrayList<ServiceProvider>();
 
 	public String getId() {
