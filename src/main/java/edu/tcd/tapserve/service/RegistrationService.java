@@ -1,5 +1,7 @@
 package edu.tcd.tapserve.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import edu.tcd.tapserve.repository.AdministratorRepository;
 import edu.tcd.tapserve.repository.CredentialsRepository;
 import edu.tcd.tapserve.repository.RoleRepository;
 import edu.tcd.tapserve.repository.ServiceProviderRepository;
+import edu.tcd.tapserve.repository.ServiceRepository;
 import edu.tcd.tapserve.repository.ServiceToProviderMapperRepository;
 import edu.tcd.tapserve.repository.UserRepository;
 
@@ -38,8 +41,11 @@ public class RegistrationService {
 	private AdministratorRepository administratorRepository;
 
 	@Autowired
+	private ServiceRepository serviceRepository;
+
+	@Autowired
 	private ServiceToProviderMapperRepository mapperRepository;
-	
+
 	public String addCredentials(Credentials credentials) {
 		credentials.setId(UUID.randomUUID().toString());
 		String actorId = UUID.randomUUID().toString();
@@ -59,7 +65,7 @@ public class RegistrationService {
 		Role role = roleRepository.findByName(RoleType.SERVICE_PROVIDER.name());
 		serviceProvider.setRole(role);
 		serviceProviderRepository.save(serviceProvider);
-		
+
 		ServiceToProviderMapper mapper = new ServiceToProviderMapper();
 		for (edu.tcd.tapserve.bean.Service service : serviceProvider.getServices()) {
 			mapper.setId(UUID.randomUUID().toString());
@@ -67,7 +73,7 @@ public class RegistrationService {
 			mapper.setServiceProvider(serviceProvider);
 			mapperRepository.save(mapper);
 		}
-		
+
 		return serviceProvider;
 	}
 
@@ -76,6 +82,14 @@ public class RegistrationService {
 		administrator.setRole(role);
 		administratorRepository.save(administrator);
 		return administrator;
+	}
+
+	public List<edu.tcd.tapserve.bean.Service> getServices() {
+		List<edu.tcd.tapserve.bean.Service> services = new ArrayList<edu.tcd.tapserve.bean.Service>();
+		Iterable<edu.tcd.tapserve.bean.Service> servicesIterable = serviceRepository.findAll();
+		for (edu.tcd.tapserve.bean.Service service : servicesIterable)
+			services.add(service);
+		return services;
 	}
 
 }
