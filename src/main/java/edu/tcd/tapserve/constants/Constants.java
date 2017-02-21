@@ -24,4 +24,17 @@ public class Constants {
 			return statusVal;
 		}
 	}
+	
+	public enum PaymentStatus {
+		PENDING(0), DONE(1);
+		private int statusVal;
+
+		PaymentStatus(int statusVal) {
+			this.statusVal = statusVal;
+		}
+
+		public int getVal() {
+			return statusVal;
+		}
+	}
 }
