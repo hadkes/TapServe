@@ -26,12 +26,26 @@ public class AppointmentController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/appointments/{appointmentId}")
+	@CrossOrigin(origins = "http://localhost:8080")
 	public Appointment getAppointmentDetails(@PathVariable String appointmentId) {
 		return appointmentService.getAppointmentDetails(appointmentId);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/appointments")
-	public List<Appointment> getAppointmentHistory(@PathVariable String userId) {
-		return appointmentService.getAppointmentHistory(userId);
+	@CrossOrigin(origins = "http://localhost:8080")
+	public List<Appointment> getAppointmentHistoryForUser(@PathVariable String userId) {
+		return appointmentService.getAppointmentHistoryForUser(userId);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/{serviceproviderId}/appointments/open")
+	@CrossOrigin(origins = "http://localhost:8080")
+	public List<Appointment> getOpenAppointmentsOfServiceProvider(@PathVariable String serviceProviderId) {
+		return appointmentService.getOpenAppointmentsOfServiceProvider(serviceProviderId);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/{serviceproviderId}/appointments")
+	@CrossOrigin(origins = "http://localhost:8080")
+	public List<Appointment> getAppointmentsOfServiceProvider(@PathVariable String serviceProviderId) {
+		return appointmentService.getAppointmentsOfServiceProvider(serviceProviderId);
 	}
 }

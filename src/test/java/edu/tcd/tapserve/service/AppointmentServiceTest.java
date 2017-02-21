@@ -17,15 +17,19 @@ import edu.tcd.tapserve.bean.Service;
 import edu.tcd.tapserve.bean.ServiceProvider;
 import edu.tcd.tapserve.bean.User;
 import edu.tcd.tapserve.repository.AppointmentRepository;
+import edu.tcd.tapserve.repository.ServiceProviderRepository;
 import edu.tcd.tapserve.repository.UserRepository;
 
 public class AppointmentServiceTest {
 
 	@Mock
-	AppointmentRepository appointmentRegistry;
+	AppointmentRepository appointmentRepository;
 
 	@Mock
-	UserRepository userRegistry;
+	UserRepository userRepository;
+
+	@Mock
+	ServiceProviderRepository serviceproviderRepository;
 
 	@InjectMocks
 	AppointmentService appointmentService = new AppointmentService();
@@ -57,7 +61,7 @@ public class AppointmentServiceTest {
 		appointment.setServiceProvider(sp);
 		appointment.setService(service);
 
-		Mockito.when(appointmentRegistry.save(appointment)).thenReturn(appointment);
+		Mockito.when(appointmentRepository.save(appointment)).thenReturn(appointment);
 
 		assertEquals(appointment.getName(), appointmentService.bookAppointment(appointment).getName());
 		assertEquals(appointment.getService(), appointmentService.bookAppointment(appointment).getService());
@@ -85,7 +89,7 @@ public class AppointmentServiceTest {
 		appointment.setServiceProvider(sp);
 		appointment.setService(service);
 
-		Mockito.when(appointmentRegistry.findOne(Mockito.anyString())).thenReturn(appointment);
+		Mockito.when(appointmentRepository.findOne(Mockito.anyString())).thenReturn(appointment);
 
 		assertEquals(appointment, appointmentService.getAppointmentDetails("app1"));
 
@@ -120,13 +124,104 @@ public class AppointmentServiceTest {
 		appointments.add(appointment1);
 		appointments.add(appointment2);
 
-		Mockito.when(userRegistry.findOne(Mockito.anyString())).thenReturn(user);
+		Mockito.when(userRepository.findOne(Mockito.anyString())).thenReturn(user);
 
-		Mockito.when(appointmentRegistry.findByUser(Mockito.any(User.class))).thenReturn(appointments);
+		Mockito.when(appointmentRepository.findByUser(Mockito.any(User.class))).thenReturn(appointments);
 
-		assertEquals(appointment1, appointmentService.getAppointmentHistory("user1").get(0));
-		assertEquals(appointment2, appointmentService.getAppointmentHistory("user1").get(1));
+		assertEquals(appointment1, appointmentService.getAppointmentHistoryForUser("user1").get(0));
+		assertEquals(appointment2, appointmentService.getAppointmentHistoryForUser("user1").get(1));
 
 	}
 
+	@Test
+	public void testGetOpenAppointmentOfServiceProvider() {
+		ServiceProvider sp = new ServiceProvider();
+		sp.setId("sp1");
+
+		Appointment appointment1 = new Appointment();
+		appointment1.setId("app1");
+		appointment1.setName("abc1");
+		appointment1.setServiceProvider(sp);
+		appointment1.setStatus(0);
+
+		Appointment appointment2 = new Appointment();
+		appointment2.setId("app2");
+		appointment2.setName("abc2");
+		appointment2.setServiceProvider(sp);
+		appointment2.setStatus(1);
+
+		Appointment appointment3 = new Appointment();
+		appointment3.setId("app3");
+		appointment3.setName("abc3");
+		appointment3.setServiceProvider(sp);
+		appointment3.setStatus(2);
+
+		Appointment appointment4 = new Appointment();
+		appointment4.setId("app1");
+		appointment4.setName("abc1");
+		appointment4.setServiceProvider(sp);
+		appointment4.setStatus(0);
+
+		List<Appointment> appointments = new ArrayList<Appointment>();
+		appointments.add(appointment1);
+		appointments.add(appointment2);
+		appointments.add(appointment3);
+		appointments.add(appointment4);
+
+		Mockito.when(serviceproviderRepository.findOne(Mockito.any(String.class))).thenReturn(sp);
+
+		Mockito.when(appointmentRepository.findByServiceProvider(Mockito.any(ServiceProvider.class)))
+				.thenReturn(appointments);
+
+		assertEquals(2, appointmentService.getOpenAppointmentsOfServiceProvider("sp1").size());
+		assertEquals(appointment1, appointmentService.getOpenAppointmentsOfServiceProvider("sp1").get(0));
+		assertEquals(appointment4, appointmentService.getOpenAppointmentsOfServiceProvider("sp1").get(1));
+	}
+
+	@Test
+	public void testGetAppointmentOfServiceProvider() {
+		ServiceProvider sp = new ServiceProvider();
+		sp.setId("sp1");
+
+		Appointment appointment1 = new Appointment();
+		appointment1.setId("app1");
+		appointment1.setName("abc1");
+		appointment1.setServiceProvider(sp);
+		appointment1.setStatus(0);
+
+		Appointment appointment2 = new Appointment();
+		appointment2.setId("app2");
+		appointment2.setName("abc2");
+		appointment2.setServiceProvider(sp);
+		appointment2.setStatus(1);
+
+		Appointment appointment3 = new Appointment();
+		appointment3.setId("app3");
+		appointment3.setName("abc3");
+		appointment3.setServiceProvider(sp);
+		appointment3.setStatus(2);
+
+		Appointment appointment4 = new Appointment();
+		appointment4.setId("app1");
+		appointment4.setName("abc1");
+		appointment4.setServiceProvider(sp);
+		appointment4.setStatus(0);
+
+		List<Appointment> appointments = new ArrayList<Appointment>();
+		appointments.add(appointment1);
+		appointments.add(appointment2);
+		appointments.add(appointment3);
+		appointments.add(appointment4);
+
+		Mockito.when(serviceproviderRepository.findOne(Mockito.any(String.class))).thenReturn(sp);
+
+		Mockito.when(appointmentRepository.findByServiceProvider(Mockito.any(ServiceProvider.class)))
+				.thenReturn(appointments);
+
+		assertEquals(4, appointmentService.getAppointmentsOfServiceProvider("sp1").size());
+		assertEquals(appointment1, appointmentService.getAppointmentsOfServiceProvider("sp1").get(0));
+		assertEquals(appointment2, appointmentService.getAppointmentsOfServiceProvider("sp1").get(1));
+		assertEquals(appointment3, appointmentService.getAppointmentsOfServiceProvider("sp1").get(2));
+		assertEquals(appointment4, appointmentService.getAppointmentsOfServiceProvider("sp1").get(3));
+	}
 }
