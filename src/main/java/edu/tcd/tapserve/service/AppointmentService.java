@@ -18,13 +18,13 @@ import edu.tcd.tapserve.repository.UserRepository;
 public class AppointmentService {
 
 	@Autowired
-	AppointmentRepository appointmentRepository;
+	private AppointmentRepository appointmentRepository;
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	ServiceProviderRepository serviceproviderRepository;
+	private ServiceProviderRepository serviceproviderRepository;
 
 	public Appointment bookAppointment(Appointment appointment) {
 		if (appointment == null)
