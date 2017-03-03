@@ -1,7 +1,7 @@
 package edu.tcd.tapserve.constants;
 
 public class Constants {
-	public static String HASH_ALGORITHM = "SHA-250";
+	public static String HASH_ALGORITHM = "SHA-256";
 	
 	public enum RoleType {
 		USER, SERVICE_PROVIDER, ADMIN
