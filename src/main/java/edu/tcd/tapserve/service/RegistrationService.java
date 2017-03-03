@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +23,12 @@ import edu.tcd.tapserve.repository.ServiceProviderRepository;
 import edu.tcd.tapserve.repository.ServiceRepository;
 import edu.tcd.tapserve.repository.ServiceToProviderMapperRepository;
 import edu.tcd.tapserve.repository.UserRepository;
+import edu.tcd.tapserve.utils.PasswordEncryptionUtil;
 
 @Service
 public class RegistrationService {
-
+	private final Logger logger = LoggerFactory.getLogger(RegistrationService.class);
+	
 	@Autowired
 	private CredentialsRepository credentialsRepository;
 
@@ -47,9 +51,23 @@ public class RegistrationService {
 	private ServiceToProviderMapperRepository mapperRepository;
 
 	public String addCredentials(Credentials credentials) {
+		if(credentials == null){
+			logger.warn("Input credentails object cannot be null.");
+			return null;
+		}
+		if(credentials.getPassword() == null || credentials.getPassword() == null){
+			logger.warn("Username or passward of credentails cannot be null.");
+			return null;
+		}
+		
 		credentials.setId(UUID.randomUUID().toString());
 		String actorId = UUID.randomUUID().toString();
 		credentials.setActorId(actorId);
+		logger.debug("Set Id and actorID to credential object.");
+		
+		String encryptedPassword = PasswordEncryptionUtil.encrypt(credentials.getPassword());
+		credentials.setPassword(encryptedPassword);
+		
 		credentialsRepository.save(credentials);
 		return actorId;
 	}
