@@ -7,4 +7,6 @@ import edu.tcd.tapserve.bean.User;
 public interface UserRepository extends CrudRepository<User, String> {
 
 	public User findByFbId(Long fbId);
+	
+	public User findByName(String name);
 }
