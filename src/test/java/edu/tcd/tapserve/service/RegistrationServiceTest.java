@@ -59,6 +59,25 @@ public class RegistrationServiceTest {
 	}
 
 	@Test
+	public void testAddNullCredentials() {
+		assertEquals(null, registrationService.addCredentials(null));
+	}
+
+	@Test
+	public void testAddCredentialsWithNullUsername() {
+		Credentials credentials = new Credentials();
+		credentials.setUsername(null);
+		assertEquals(null, registrationService.addCredentials(credentials));
+	}
+
+	@Test
+	public void testAddCredentialsWithNullPassword() {
+		Credentials credentials = new Credentials();
+		credentials.setPassword(null);
+		assertEquals(null, registrationService.addCredentials(credentials));
+	}
+
+	@Test
 	public void testAddCredentials() {
 		Credentials credentials = new Credentials();
 		credentials.setActorId("abc");
