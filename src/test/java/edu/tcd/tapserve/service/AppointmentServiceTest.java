@@ -16,6 +16,7 @@ import edu.tcd.tapserve.bean.Appointment;
 import edu.tcd.tapserve.bean.Service;
 import edu.tcd.tapserve.bean.ServiceProvider;
 import edu.tcd.tapserve.bean.User;
+import edu.tcd.tapserve.constants.Constants.AppointmentStatus;
 import edu.tcd.tapserve.repository.AppointmentRepository;
 import edu.tcd.tapserve.repository.ServiceProviderRepository;
 import edu.tcd.tapserve.repository.UserRepository;
@@ -68,7 +69,7 @@ public class AppointmentServiceTest {
 		assertEquals(appointment.getUser(), appointmentService.bookAppointment(appointment).getUser());
 		assertEquals(appointment.getServiceProvider(),
 				appointmentService.bookAppointment(appointment).getServiceProvider());
-
+		assertEquals(AppointmentStatus.OPEN.getVal(), appointmentService.bookAppointment(appointment).getStatus());
 	}
 
 	@Test

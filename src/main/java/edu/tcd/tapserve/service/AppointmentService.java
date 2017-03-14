@@ -1,6 +1,8 @@
 package edu.tcd.tapserve.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +33,8 @@ public class AppointmentService {
 			return null;
 
 		appointment.setId(UUID.randomUUID().toString());
+		appointment.setStatus(AppointmentStatus.OPEN.getVal());
+		appointment.setBookingDate(new Timestamp(new Date().getTime()));
 		appointmentRepository.save(appointment);
 		return appointment;
 	}
