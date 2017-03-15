@@ -6,4 +6,5 @@ import edu.tcd.tapserve.bean.Credentials;
 
 public interface CredentialsRepository extends CrudRepository<Credentials, String> {
 
+	public Credentials findByUsername(String username);
 }
