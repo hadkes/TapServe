@@ -43,7 +43,7 @@ public class AppointmentController {
 		return appointmentService.getOpenAppointmentsOfServiceProvider(serviceProviderId);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/{serviceproviderId}/appointments")
+	@RequestMapping(method = RequestMethod.GET, value = "/{serviceproviderId}/spAppointments")
 	@CrossOrigin(origins = "http://localhost:8080")
 	public List<Appointment> getAppointmentsOfServiceProvider(@PathVariable String serviceProviderId) {
 		return appointmentService.getAppointmentsOfServiceProvider(serviceProviderId);
