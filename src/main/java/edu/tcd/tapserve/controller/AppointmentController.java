@@ -37,7 +37,7 @@ public class AppointmentController {
 		return appointmentService.getAppointmentHistoryForUser(userId);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/{serviceproviderId}/appointments/open")
+	@RequestMapping(method = RequestMethod.GET, value = "/{serviceProviderId}/appointments/open")
 	@CrossOrigin(origins = "http://localhost:8080")
 	public List<Appointment> getOpenAppointmentsOfServiceProvider(@PathVariable String serviceProviderId) {
 		return appointmentService.getOpenAppointmentsOfServiceProvider(serviceProviderId);
