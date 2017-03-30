@@ -12,6 +12,5 @@ public class StartApp {
 	public static void main(String[] args) {
 		logger.debug("Staring spring boot configuration.");
 		SpringApplication.run(StartApp.class, args);
-		
 	}
 }
