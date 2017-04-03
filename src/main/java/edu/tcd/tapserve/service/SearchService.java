@@ -44,7 +44,7 @@ public class SearchService {
 			List<RatingReview> reviews = ratingReviewRepository.findByServiceProvider(mapper.getServiceProvider());
 			customObj.setReviews(reviews);
 
-			//customObj.setReviewsByFriends(friendService.getFriendsReviews(reviews, userId));
+			customObj.setReviewsByFriends(friendService.getFriendsReviews(reviews, userId));
 
 			customServiceProviders.add(customObj);
 		}
